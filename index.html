@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>综合搜索网页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+            padding: 0 10px;
+        }
+        #search-container {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            max-width: 500px;
+            font-size: 16px;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+        #button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            flex: 1 1 calc(50% - 20px);
+            margin: 5px;
+            padding: 15px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            max-width: 100%;
+            box-sizing: border-box;
+            border: none;
+            color: white;
+        }
+        @media (min-width: 600px) {
+            button {
+                flex: 1 1 calc(33.33% - 20px);
+                font-size: 18px;
+            }
+        }
+        @media (min-width: 900px) {
+            button {
+                flex: 1 1 calc(25% - 20px);
+                font-size: 18px;
+            }
+        }
+        #toggle-container {
+            margin-bottom: 20px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <h1>综合搜索网页</h1>
+    <p>请输入搜索内容或直接点击按钮使用随机关键词搜索</p>
+
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="输入搜索内容...">
+    </div>
+
+    <div id="toggle-container">
+        <label class="switch">
+            <input type="checkbox" id="openInBackground">
+            <span class="slider"></span>
+        </label>
+        <p>开关状态：<span id="toggle-status">新页面</span></p>
+    </div>
+
+    <div id="button-container">
+        <button onclick="searchWithEngine('google')">Google 搜索</button>
+        <button onclick="searchWithEngine('bing')">Bing 搜索</button>
+        <button onclick="searchWithEngine('yahoo')">Yahoo 搜索</button>
+        <button onclick="searchWithEngine('baidu')">百度搜索</button>
+        <button onclick="searchWithEngine('sogou')">搜狗搜索</button>
+        <button onclick="searchWithEngine('360')">360搜索</button>
+        <button onclick="searchWithEngine('duckduckgo')">DuckDuckGo 搜索</button>
+        <button onclick="searchWithEngine('yandex')">Yandex 搜索</button>
+        <button onclick="searchWithEngine('naver')">Naver 搜索</button>
+        <button onclick="searchWithEngine('ask')">Ask 搜索</button>
+    </div>
+
+    <script>
+        // 定义关键词列表
+        const keywords = [
+            "人工智能",
+            "区块链",
+            "量子计算",
+            "大数据",
+            "机器学习",
+            "物联网",
+            "5G技术",
+            "云计算",
+            "深度学习",
+            "虚拟现实",
+            "自动驾驶",
+            "健康科技",
+            "清洁能源",
+            "基因编辑",
+            "智能家居"
+        ];
+
+        // 随机获取一个关键词
+        function getRandomKeyword() {
+            return keywords[Math.floor(Math.random() * keywords.length)];
+        }
+
+        // 获取搜索框中的内容，如果为空则返回随机关键词
+        function getSearchQuery() {
+            const searchInput = document.getElementById('search-input').value.trim();
+            return searchInput === "" ? getRandomKeyword() : searchInput;
+        }
+
+        // 根据选定的搜索引擎进行搜索
+        function searchWithEngine(engine) {
+            const query = getSearchQuery();
+            const openInBackground = document.getElementById('openInBackground').checked;
+            let url = '';
+
+            switch(engine) {
+                case 'google':
+                    url = `https://www.google.com/search?q=${query}`;
+                    break;
+                case 'bing':
+                    url = `https://www.bing.com/search?q=${query}`;
+                    break;
+                case 'yahoo':
+                    url = `https://search.yahoo.com/search?p=${query}`;
+                    break;
+                case 'baidu':
+                    url = `https://www.baidu.com/s?wd=${query}`;
+                    break;
+                case 'sogou':
+                    url = `https://www.sogou.com/web?query=${query}`;
+                    break;
+                case '360':
+                    url = `https://www.so.com/s?q=${query}`;
+                    break;
+                case 'duckduckgo':
+                    url = `https://duckduckgo.com/?q=${query}`;
+                    break;
+                case 'yandex':
+                    url = `https://yandex.com/search/?text=${query}`;
+                    break;
+                case 'naver':
+                    url = `https://search.naver.com/search.naver?query=${query}`;
+                    break;
+                case 'ask':
+                    url = `https://www.ask.com/web?q=${query}`;
+                    break;
+            }
+
+            if (openInBackground) {
+                // 在当前页面打开搜索结果
+                window.location.href = url;
+            } else {
+                // 在新页面打开搜索结果
+                window.open(url, '_blank');
+            }
+        }
+
+        // 生成随机颜色，确保亮度适中
+        function getRandomColor() {
+            const h = Math.floor(Math.random() * 360);  // 色调 (0-360)
+            const s = Math.floor(Math.random() * 50) + 50;  // 饱和度 (50-100%)
+            const l = Math.floor(Math.random() * 30) + 40;  // 亮度 (40-70%)
+            return `hsl(${h}, ${s}%, ${l}%)`;
+        }
+
+        // 判断颜色是否为浅色
+        function isLightColor(hslColor) {
+            const parts = hslColor.match(/(\d+\.?\d*)/g);
+            return parts && parseInt(parts[2]) > 50;
+        }
+
+        // 设置按钮的随机背景颜色，并调整文本颜色
+        function setRandomButtonColors() {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                const bgColor = getRandomColor();
+                button.style.backgroundColor = bgColor;
+                // 根据背景颜色亮度调整文本颜色
+                button.style.color = isLightColor(bgColor) ? 'black' : 'white';
+            });
+        }
+
+        // 更新开关状态显示
+        function updateToggleStatus() {
+            const toggleStatus = document.getElementById('toggle-status');
+            const isChecked = document.getElementById('openInBackground').checked;
+            toggleStatus.textContent = isChecked ? '当前页面' : '新页面';
+        }
+
+        // 保存开关状态到 localStorage
+        function saveSwitchState() {
+            const isChecked = document.getElementById('openInBackground').checked;
+            localStorage.setItem('openInBackground', isChecked);
+        }
+
+        // 从 localStorage 恢复开关状态
+        function loadSwitchState() {
+            const savedState = localStorage.getItem('openInBackground');
+            if (savedState !== null) {
+                document.getElementById('openInBackground').checked = (savedState === 'true');
+                updateToggleStatus();
+            }
+        }
+
+        // 在页面加载时设置随机颜色，并初始化开关状态
+        window.onload = function() {
+            setRandomButtonColors();
+            loadSwitchState();
+            document.getElementById('openInBackground').addEventListener('change', function() {
+                updateToggleStatus();
+                saveSwitchState();
+            });
+        };
+    </script>
+</body>
+</html>
